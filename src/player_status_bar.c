@@ -56,7 +56,6 @@ const MakiseBitmap stop = {
 	stop_ar
 };
 
-
 static MResult draw ( MElement* b, MakiseGUI *gui ) {
 	MPlayerStatusBar *p = ( MPlayerStatusBar* )b->data;
 	_m_e_helper_draw_box_param( gui->buffer, &b->position, p->s->border_color, p->s->bg_color, 0 );
@@ -65,7 +64,7 @@ static MResult draw ( MElement* b, MakiseGUI *gui ) {
 	// Play.
 
 	const MakiseBitmap* state_bm;
-	uint32_t state = p->f->get_state_play();
+	uint32_t state = p->f->getStatePlay();
 	switch ( state ) {
 	case 0: state_bm = &stop;			break;
 	case 1: state_bm = &play_bitmap;	break;
@@ -75,7 +74,7 @@ static MResult draw ( MElement* b, MakiseGUI *gui ) {
 	makise_d_bitmap( gui->buffer, 2, 2, state_bm, MC_Black );
 
 	// Bat.
-	uint32_t bat = p->f->get_percent_battery();
+	uint32_t bat = p->f->getPercentBattery();
 	char string_bat[10];
 	convert_uint32_t_to_string( bat, string_bat );
 
