@@ -58,7 +58,7 @@ const MakiseBitmap stop = {
 
 static MResult draw ( MElement* b, MakiseGUI *gui ) {
 	MPlayerStatusBar *p = ( MPlayerStatusBar* )b->data;
-	_m_e_helper_draw_box_param( gui->buffer, &b->position, p->s->border_color, p->s->bg_color, 0 );
+	_m_e_helper_draw_box_param( gui->buffer, &b->position, p->s->borderColor, p->s->bgColor, 0 );
 
 
 	// Play.
@@ -80,8 +80,8 @@ static MResult draw ( MElement* b, MakiseGUI *gui ) {
 
 	uint32_t x_text_bat = b->position.real_x + b->position.width - 1;
 
-	uint32_t w_bat = makise_d_string_width( string_bat, 3, p->s->font_ercent );
-	uint32_t w_pr	= makise_d_string_width( "%", 1, p->s->font_ercent );
+	uint32_t w_bat = makise_d_string_width( string_bat, 3, p->s->fontErcent );
+	uint32_t w_pr	= makise_d_string_width( "%", 1, p->s->fontErcent );
 
 	x_text_bat -= w_bat + w_pr;
 	x_text_bat -= 20;
@@ -89,7 +89,7 @@ static MResult draw ( MElement* b, MakiseGUI *gui ) {
 	makise_d_string( gui->buffer, string_bat, 10,
 					 x_text_bat, 2,
 					 MDTextPlacement_LeftUp,
-					 p->s->font_ercent, p->s->font_font_ercent_col );
+					 p->s->fontErcent, p->s->fontErcentCol );
 
 	x_text_bat += w_bat;
 
@@ -97,7 +97,7 @@ static MResult draw ( MElement* b, MakiseGUI *gui ) {
 					 x_text_bat,
 					 2,
 					 MDTextPlacement_LeftUp,
-					 p->s->font_ercent, p->s->font_font_ercent_col );
+					 p->s->fontErcent, p->s->fontErcentCol );
 
 	x_text_bat += w_pr;
 	makise_d_rect_filled( gui->buffer,

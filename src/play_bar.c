@@ -13,11 +13,11 @@ static MResult draw ( MElement* b, MakiseGUI *gui );
 static char name[] = "Play bar";
 static char init_char_array[9] = "00:00:00";
 
-void m_create_play_bar (	MPlayBar*						b,
-							MContainer*						c,
-							MPosition						pos,
-							uint8_t							margin_play_bar,
-							const MakiseStyle_PlayBar*		style	) {
+void mCreatePlayBar (	MPlayBar*						b,
+						MContainer*						c,
+						MPosition						pos,
+						uint8_t							margin_play_bar,
+						const MakiseStyle_PlayBar*		style	) {
 	b->style		= style;
 	b->margin		= margin_play_bar;
 	b->upper_bound_time_sec = 0;
@@ -42,41 +42,41 @@ static MResult draw ( MElement* b, MakiseGUI *gui ) {
 								e->current_time_string, 9,
 								b->position.real_x, b->position.real_y,
 								MDTextPlacement_LeftUp,
-								e->style->font, e->style->time_color );
+								e->style->font, e->style->timeColor );
 
 	makise_d_rect_filled	( gui->buffer,
 								b->position.real_x + e->time_width + 1,
 								b->position.real_y,
 								e->pb_width,
 								b->position.height,
-								e->style->border_color,
-								e->style->bg_color );
+								e->style->borderColor,
+								e->style->bgColor );
 
 	makise_d_rect_filled	( gui->buffer,
 								b->position.real_x + e->time_width + 1 + e->margin + 1,
 								b->position.real_y + e->margin + 1,
 								( e->pb_width - e->margin * 2 - 2 ) * e->duty / 100,
 								b->position.height - e->margin * 2 - 2,
-								e->style->duty_color,
-								e->style->duty_color );
+								e->style->dutyColor,
+								e->style->dutyColor );
 
 	makise_d_string		 ( gui->buffer,
 								e->upper_bound_time_string, 9,
 								b->position.real_x + e->time_width + 1 + e->pb_width + 2,
 								b->position.real_y,
 								MDTextPlacement_LeftUp,
-								e->style->font, e->style->time_color);
+								e->style->font, e->style->timeColor);
 	return 0;
 }
 
-void m_play_bar_inc_sec ( MPlayBar* b ) {
+void mPlayBarIncSec ( MPlayBar* b ) {
 	if ( b->current_time_sec > b->upper_bound_time_sec ) return;
 	b->current_time_sec++;
 	b->duty = (uint8_t)((float)100 / (float)b->upper_bound_time_sec * (float)b->current_time_sec);
 	convert_time_sec_to_char( b->current_time_sec, b->current_time_string );
 }
 
-void m_play_bar_set_new_track ( MPlayBar* b, uint32_t track_time_sec ) {
+void mPlayBarSetNewTrack ( MPlayBar* b, uint32_t track_time_sec ) {
 	b->upper_bound_time_sec = track_time_sec;
 	b->current_time_sec = 0;
 	b->duty = 0;

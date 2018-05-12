@@ -9,10 +9,10 @@ extern "C" {
 #include "makise_e.h"
 
 typedef struct {
-	uint32_t					bg_color;
-	uint32_t					border_color;
-	uint32_t					duty_color;
-	uint32_t					time_color;
+	uint32_t					bgColor;
+	uint32_t					borderColor;
+	uint32_t					dutyColor;
+	uint32_t					timeColor;
 	const MakiseFont*			font;
 } MakiseStyle_PlayBar;
 
@@ -30,14 +30,14 @@ typedef struct {
 	uint32_t						pb_width;
 } MPlayBar;
 
-void m_create_play_bar (	MPlayBar*						b,
-							MContainer*						c,
-							MPosition						pos,
-							uint8_t							margin_play_bar,
-							const MakiseStyle_PlayBar*		style	);
+void	mCreatePlayBar				(	MPlayBar*						b,
+										MContainer*						c,
+										MPosition						pos,
+										uint8_t							margin_play_bar,
+										const MakiseStyle_PlayBar*		style	);
 
-void m_play_bar_inc_sec		 ( MPlayBar* b );
-void m_play_bar_set_new_track	( MPlayBar* b, uint32_t track_time_sec );
+void	mPlayBarIncSec				(	MPlayBar* b );
+void	mPlayBarSetNewTrack			(	MPlayBar* b, uint32_t trackTimeSec	);
 
 #ifdef __cplusplus
 }
