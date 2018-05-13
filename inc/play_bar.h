@@ -38,6 +38,7 @@ void	mCreatePlayBar				(	MPlayBar*						b,
 
 void	mPlayBarIncSec				(	MPlayBar* b );
 void	mPlayBarSetNewTrack			(	MPlayBar* b, uint32_t trackTimeSec	);
+void	mPlayBarResetTrack			(	MPlayBar* b	);
 
 #ifdef __cplusplus
 }

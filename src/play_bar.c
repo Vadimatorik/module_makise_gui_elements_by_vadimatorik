@@ -79,6 +79,11 @@ void mPlayBarIncSec ( MPlayBar* b ) {
 void mPlayBarSetNewTrack ( MPlayBar* b, uint32_t track_time_sec ) {
 	b->upper_bound_time_sec = track_time_sec;
 	b->current_time_sec = 0;
+	mPlayBarResetTrack( b );
+}
+
+void mPlayBarResetTrack (	MPlayBar* b	) {
+	b->current_time_sec = 0;
 	b->duty = 0;
 	memcpy( b->current_time_string, init_char_array, 9 );
 	convert_time_sec_to_char( b->upper_bound_time_sec, b->upper_bound_time_string );
