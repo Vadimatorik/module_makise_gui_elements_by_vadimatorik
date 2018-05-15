@@ -40,6 +40,9 @@ void mCreateSlimHorizontalList (	MSlimHorizontalList*						b,
 }
 
 void mSlimHorizontalListScrollString (	MSlimHorizontalList*	b	) {
+	if ( b->stringNow == NULL )
+		return;
+
 	uint32_t	len;
 	len = makise_d_string_width( b->stringNow, MDTextAll, b->style->fontString );
 
