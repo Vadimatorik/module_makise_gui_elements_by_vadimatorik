@@ -25,6 +25,11 @@ typedef struct {
 
 	uint32_t									maxItem;
 	uint32_t									currenItem;
+
+	/// На сколько пикселей нужно сдвинуть символ на экране перед тем,
+	/// как переместить указатель на следующий символ.
+	uint32_t									dxPixChar;
+	uint32_t									dxPixNow;
 } MSlimHorizontalList;
 
 void		mCreateSlimHorizontalList					(	MSlimHorizontalList*						b,
@@ -32,7 +37,9 @@ void		mCreateSlimHorizontalList					(	MSlimHorizontalList*						b,
 															MPosition									pos,
 															const MakiseStyle_SMSlimHorizontalList*		style	);
 
-void		mSlimHorizontalListScrollString				(	MSlimHorizontalList*	b	);
+/// 0 - прокрутка где-то в середине строки.
+/// 1 - в начале или в конце.
+int			mSlimHorizontalListScrollString				(	MSlimHorizontalList*	b	);
 
 void		mSlimHorizontalSetItemCount					(	MSlimHorizontalList*	b, uint32_t itemCount	);
 void		mSlimHorizontalListSetStringCurrentItem		(	MSlimHorizontalList*	b, const char* stringItem	);

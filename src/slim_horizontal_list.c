@@ -32,6 +32,9 @@ void mCreateSlimHorizontalList (	MSlimHorizontalList*						b,
 	b->maxItem		=	0;
 	b->currenItem	=	0;
 
+	b->dxPixChar	=	0;
+	b->dxPixNow		=	0;
+
 	makise_g_cont_add( c, e );
 
 #if ( MAKISE_ENABLE_DEBUG_OUTPUT > 0 )
@@ -39,24 +42,47 @@ void mCreateSlimHorizontalList (	MSlimHorizontalList*						b,
 #endif
 }
 
-void mSlimHorizontalListScrollString (	MSlimHorizontalList*	b	) {
+int mSlimHorizontalListScrollString (	MSlimHorizontalList*	b	) {
 	if ( b->stringNow == NULL )
-		return;
+		return 0;
 
 	uint32_t	len;
 	len = makise_d_string_width( b->stringNow, MDTextAll, b->style->fontString );
 
+	/// Прокрутили весь символ.
+	if ( b->dxPixNow != b->dxPixChar ) {			/// Если не прокрутили весь пиксель, то прокручиваем.
+		b->dxPixNow++;
+
+		/// Тест на то, что при следующей итерации мы не перейдем в начало.
+		if ( ( !( len - b->dxPixNow - 1 > b->e.position.width - 8 * 2 - 2 ) ) &&
+				( b->dxPixNow == b->dxPixChar ) ) {
+			return 1;
+		}
+
+		return 0;
+	}
+
+	b->stringNow++;							/// Сдвигаемся на 1 символ.
+	len = makise_d_string_width( b->stringNow, MDTextAll, b->style->fontString );
+
 	/// Если строка не вмещается в экран.
-	if ( len > b->e.position.width ) {
-		b->stringNow++;							/// Сдвигаемся на 1 символ.
+	if ( len > b->e.position.width - 8 * 2 - 2 ) {
+		b->dxPixNow = 1;
+		b->dxPixChar	=	makise_d_string_width( b->stringNow, 1, b->style->fontString );
 	} else {
 		b->stringNow	=	b->stringBase;		/// Строка с начала.
+		b->dxPixNow = 0;
+		return 1;
 	}
+
+	return 0;
 }
 
 void mSlimHorizontalListSetStringCurrentItem (	MSlimHorizontalList*	b, const char* stringItem	) {
 	b->stringBase	=	stringItem;
 	b->stringNow	=	stringItem;
+	b->dxPixChar	=	makise_d_string_width( b->stringNow, 1, b->style->fontString );
+	b->dxPixNow		=	0;
 }
 
 void mSlimHorizontalSetItemCount (	MSlimHorizontalList*	b, uint32_t itemCount	) {
@@ -68,6 +94,8 @@ void mSlimHorizontalListLeft (	MSlimHorizontalList*	b, const char* stringItem	) 
 		b->currenItem--;
 		b->stringBase	=	stringItem;
 		b->stringNow	=	stringItem;
+		b->dxPixChar	=	makise_d_string_width( b->stringNow, 1, b->style->fontString );
+		b->dxPixNow		=	0;
 	}
 }
 
@@ -76,6 +104,8 @@ void mSlimHorizontalListRight (	MSlimHorizontalList*	b, const char* stringItem	)
 		b->currenItem++;
 		b->stringBase	=	stringItem;
 		b->stringNow	=	stringItem;
+		b->dxPixChar	=	makise_d_string_width( b->stringNow, 1, b->style->fontString );
+		b->dxPixNow		=	0;
 	}
 }
 
@@ -128,6 +158,36 @@ static MResult draw ( MElement* b, MakiseGUI *gui ) {
 
 	MPosition			pos		=		b->position;
 
+	/// Печатаем строку.
+	/// Строка будет съезжать влево на левый квадрат со стрелкой.
+	/// это нормально. Его перетрут дальше (перетрут мусор, который вылезет за пределы.
+	if ( p->stringNow != NULL ) {
+		makise_d_string(	gui->buffer,
+							p->stringNow,
+							MDTextAll,								/// Размер будет ограничен внутри автоматически.
+							pos.real_x + 2 + 8 - 1 - p->dxPixNow,
+							pos.real_y + 2,
+							MDTextPlacement_LeftUp,
+							p->style->fontString,
+							p->style->stringColor	);
+
+		/// Затираем строку между левой палкой и строкой.
+		makise_d_line(	gui->buffer,
+						pos.real_x + 8,
+						pos.real_y + 1,
+						pos.real_x + 8,
+						pos.real_y + pos.height - 2,
+						p->style->bgColor );
+
+		/// Затираем строку между правой палкой и строкой.
+		makise_d_line(	gui->buffer,
+						pos.real_x + b->position.width - 8 - 1,
+						pos.real_y + 1,
+						pos.real_x + b->position.width - 8 - 1,
+						pos.real_y + pos.height - 2,
+						p->style->bgColor );
+	}
+
 	/// Вычисляем габариты для прямоугольника, окружающего левую стрелку.
 	pos.width					=		8;
 
@@ -141,29 +201,8 @@ static MResult draw ( MElement* b, MakiseGUI *gui ) {
 		makise_d_bitmap( gui->buffer, pos.real_x + 2, pos.real_y + 2, &B_arrowLeftEmpty, p->style->bgArrowColor );			/// 0-й элемент (самый левый).
 	}
 
-	/// Вычисляем габариты для рамки строки.
-	pos.real_x					+=		8 - 1;			/// 1 стобец + 1 пропуск + 4 изображение + 1 пропуск + 1 столбей. - 1 из-за того, что мы хотим наложить границы.
-	pos.width					=		b->position.width - 16 + 2;		/// На каждый квадрат по 8 - 2(совмещение границ).
-
-	/// Рамка под строку.
-	_m_e_helper_draw_box_param( gui->buffer, &pos, p->style->borderColor, p->style->bgColor, 0 );
-
-	/// Печатаем строку.
-	if ( p->stringNow != NULL ) {
-		makise_d_string(	gui->buffer,
-							p->stringNow,
-							MDTextAll,								/// Размер будет ограничен внутри автоматически.
-							pos.real_x + 2,
-							pos.real_y + 2 +
-								( ( pos.height - 4 ) -				/// От высоты отнимаем толщину линии сверху и снизу + 1 пиксель между.
-								p->style->fontString->height ) / 2,
-							MDTextPlacement_LeftUp,
-							p->style->fontString,
-							p->style->stringColor	);
-	}
-
 	/// Вычисляем габариты для прямоугольника, окружающего правую стрелку.
-	pos.real_x		+=	pos.width - 1;
+	pos.real_x		+=	b->position.width - 8;
 	pos.width		=	8;
 
 	/// Рамка под правое поле.
