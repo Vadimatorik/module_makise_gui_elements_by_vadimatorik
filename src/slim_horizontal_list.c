@@ -42,6 +42,18 @@ void mCreateSlimHorizontalList (	MSlimHorizontalList*						b,
 #endif
 }
 
+static void initStringPointer ( MSlimHorizontalList*	b, const char* stringItem ) {
+	b->dxPixNow		=	0;
+
+	uint32_t len;
+	len = makise_d_string_width( b->stringBase, MDTextAll, b->style->fontString );
+	if ( len > b->e.position.width - 8 * 2 - 2 ) {
+		b->dxPixChar	=	makise_d_string_width( b->stringNow, 1, b->style->fontString );
+	} else {
+		b->dxPixChar	=	0;		/// Сдвиг не нужен.
+	}
+}
+
 int mSlimHorizontalListScrollString (	MSlimHorizontalList*	b	) {
 	if ( b->stringNow == NULL )
 		return 0;
@@ -70,8 +82,8 @@ int mSlimHorizontalListScrollString (	MSlimHorizontalList*	b	) {
 		b->dxPixNow = 1;
 		b->dxPixChar	=	makise_d_string_width( b->stringNow, 1, b->style->fontString );
 	} else {
-		b->stringNow	=	b->stringBase;		/// Строка с начала.
-		b->dxPixNow = 0;
+		b->stringNow = b->stringBase;
+		initStringPointer( b, b->stringBase );
 		return 1;
 	}
 
@@ -81,8 +93,8 @@ int mSlimHorizontalListScrollString (	MSlimHorizontalList*	b	) {
 void mSlimHorizontalListSetStringCurrentItem (	MSlimHorizontalList*	b, const char* stringItem	) {
 	b->stringBase	=	stringItem;
 	b->stringNow	=	stringItem;
-	b->dxPixChar	=	makise_d_string_width( b->stringNow, 1, b->style->fontString );
-	b->dxPixNow		=	0;
+
+	initStringPointer( b, stringItem );
 }
 
 void mSlimHorizontalSetItemCount (	MSlimHorizontalList*	b, uint32_t itemCount	) {
@@ -92,20 +104,14 @@ void mSlimHorizontalSetItemCount (	MSlimHorizontalList*	b, uint32_t itemCount	) 
 void mSlimHorizontalListLeft (	MSlimHorizontalList*	b, const char* stringItem	) {
 	if ( b->currenItem > 0 ) {
 		b->currenItem--;
-		b->stringBase	=	stringItem;
-		b->stringNow	=	stringItem;
-		b->dxPixChar	=	makise_d_string_width( b->stringNow, 1, b->style->fontString );
-		b->dxPixNow		=	0;
+		initStringPointer( b, stringItem );
 	}
 }
 
 void mSlimHorizontalListRight (	MSlimHorizontalList*	b, const char* stringItem	) {
 	if ( b->currenItem != b->maxItem ) {
 		b->currenItem++;
-		b->stringBase	=	stringItem;
-		b->stringNow	=	stringItem;
-		b->dxPixChar	=	makise_d_string_width( b->stringNow, 1, b->style->fontString );
-		b->dxPixNow		=	0;
+		initStringPointer( b, stringItem );
 	}
 }
 
