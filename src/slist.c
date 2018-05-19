@@ -143,12 +143,21 @@ static void draw_item ( MSList_Item *ci, MSList *l, MakiseGUI *gui,
 				(MakiseBufferBorder){
 					x, y, w, eh, 0, 0});
 
+	/// Печатаем строку. Ограничение строки - граница элемента.
 	makise_d_string(gui->buffer, ci->text, MDTextAll,
 			x + 2 + dx,
 			y + 2,
-			w - 4,
+			MDTextPlacement_LeftUp,
 			l->item_style->font,
 			c_th->font_col);
+
+	/// Затираем строку между правой палкой и строкой.
+	makise_d_line(	gui->buffer,
+					x + ( w - l->style->scroll_width ) - 2,
+					y + 1,
+					x + ( w - l->style->scroll_width ) - 2,
+					y + eh - 2,
+					c_th->bg_color );
 
 	makise_rem_border(gui->buffer, border);
 }
