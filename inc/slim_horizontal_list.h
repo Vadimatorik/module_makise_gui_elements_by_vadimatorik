@@ -18,7 +18,7 @@ typedef struct {
 } MakiseStyle_SMSlimHorizontalList;
 
 typedef struct {
-	MElement									e;
+	MElement									el;
 	const char*									stringBase;
 	const char*									stringNow;
 	const MakiseStyle_SMSlimHorizontalList*		style;

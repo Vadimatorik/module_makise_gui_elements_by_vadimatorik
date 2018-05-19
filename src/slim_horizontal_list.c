@@ -14,7 +14,7 @@ void mCreateSlimHorizontalList (	MSlimHorizontalList*						b,
 									MContainer*									c,
 									MPosition									pos,
 									const MakiseStyle_SMSlimHorizontalList*		style	) {
-	MElement *e = &b->e;
+	MElement *e = &b->el;
 
 	m_element_create(	e, name, b,
 						 1, MFocusPrior_NotFocusble,
@@ -47,7 +47,7 @@ static void initStringPointer ( MSlimHorizontalList*	b, const char* stringItem )
 
 	uint32_t len;
 	len = makise_d_string_width( b->stringBase, MDTextAll, b->style->fontString );
-	if ( len > b->e.position.width - 8 * 2 - 2 ) {
+	if ( len > b->el.position.width - 8 * 2 - 2 ) {
 		b->dxPixChar	=	makise_d_string_width( b->stringNow, 1, b->style->fontString );
 	} else {
 		b->dxPixChar	=	0;		/// Сдвиг не нужен.
@@ -66,7 +66,7 @@ int mSlimHorizontalListScrollString (	MSlimHorizontalList*	b	) {
 		b->dxPixNow++;
 
 		/// Тест на то, что при следующей итерации мы не перейдем в начало.
-		if ( ( !( len - b->dxPixNow - 1 > b->e.position.width - 8 * 2 - 2 ) ) &&
+		if ( ( !( len - b->dxPixNow - 1 > b->el.position.width - 8 * 2 - 2 ) ) &&
 				( b->dxPixNow == b->dxPixChar ) ) {
 			return 1;
 		}
@@ -78,7 +78,7 @@ int mSlimHorizontalListScrollString (	MSlimHorizontalList*	b	) {
 	len = makise_d_string_width( b->stringNow, MDTextAll, b->style->fontString );
 
 	/// Если строка не вмещается в экран.
-	if ( len > b->e.position.width - 8 * 2 - 2 ) {
+	if ( len > b->el.position.width - 8 * 2 - 2 ) {
 		b->dxPixNow = 1;
 		b->dxPixChar	=	makise_d_string_width( b->stringNow, 1, b->style->fontString );
 	} else {
