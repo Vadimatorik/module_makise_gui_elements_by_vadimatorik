@@ -1,10 +1,11 @@
+#include "player_status_bar.h"
+
 #ifdef ELEMENT_PLAYER_STATUS_BAR_ENABLED
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "player_status_bar.h"
 #include "text_func.h"
 
 static MResult draw ( MElement* b, MakiseGUI *gui );

@@ -1,6 +1,6 @@
-#if defined(ELEMENT_SLIM_HORIZONTAL_LIST_ENABLED) && defined(ELEMENT_SCROLL_STRING_ENABLED)
-
 #include "slim_horizontal_list.h"
+
+#if defined(ELEMENT_SLIM_HORIZONTAL_LIST_ENABLED) && defined(ELEMENT_SCROLL_STRING_ENABLED)
 
 #ifdef __cplusplus
 extern "C" {
