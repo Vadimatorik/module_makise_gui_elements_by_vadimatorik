@@ -1,5 +1,7 @@
 #pragma once
 
+#include "makise_e.h"
+
 #if defined(ELEMENT_SLIM_HORIZONTAL_LIST_ENABLED) && defined(ELEMENT_SCROLL_STRING_ENABLED)
 
 #ifdef __cplusplus

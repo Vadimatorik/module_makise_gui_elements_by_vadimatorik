@@ -1,12 +1,12 @@
 #pragma once
 
+#include "makise_e.h"
+
 #ifdef ELEMENT_PLAYER_STATUS_BAR_ENABLED
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "makise_e.h"
 
 #define PLAYER_STATUS_STOP		0
 #define PLAYER_STATUS_PLAY		1

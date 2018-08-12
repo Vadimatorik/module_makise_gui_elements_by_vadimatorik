@@ -1,5 +1,7 @@
 #pragma once
 
+#include "makise_e.h"
+
 #ifdef ELEMENT_PROGRESS_BAR_ENABLED
 
 #ifdef __cplusplus

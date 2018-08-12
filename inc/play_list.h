@@ -1,5 +1,7 @@
 #pragma once
 
+#include "makise_e.h"
+
 #ifdef ELEMENT_PLAY_LIST_ENABLED
 
 #ifdef __cplusplus
