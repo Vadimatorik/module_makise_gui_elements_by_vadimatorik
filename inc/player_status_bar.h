@@ -13,10 +13,10 @@ extern "C" {
 #define PLAYER_STATUS_PAUSE		2
 
 typedef struct {
-	const MakiseFont*			const fontErcent;
-	const uint32_t				fontErcentCol;
-	const uint32_t				bgColor;
-	const uint32_t				borderColor;
+	const MakiseFont*		fontErcent;
+	uint32_t				fontErcentCol;
+	uint32_t				bgColor;
+	uint32_t				borderColor;
 } MakiseStyle_SMPlayerStatusBar;
 
 typedef struct {
